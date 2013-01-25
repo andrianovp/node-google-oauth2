@@ -24,7 +24,8 @@ module.exports =  function(opts) {
       response_type: 'code',
       client_id: opts.client_id,
       redirect_uri: opts.redirect_uri,
-      scope: 'https://www.googleapis.com/auth/userinfo.profile'	
+      //scope: 'https://www.googleapis.com/auth/userinfo.profile'	
+      scope: "https://www.googleapis.com/auth/drive.readonly.metadata"
     };
 
     var uri = '\''+endpoint_auth + '?' + querystring.stringify(qs) +'\'';
