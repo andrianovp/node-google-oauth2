@@ -51,7 +51,7 @@ describe('Google Oauth', function(){
         //body.should.have.length(4);
         access_token = body.access_token;
         console.log("access_token: " + access_token);
-         
+        var total = 0;
         var getChunk = function(link) {
             console.log(link);
             request.get({
@@ -67,13 +67,15 @@ describe('Google Oauth', function(){
                 console.log("err:" + err);
                 return done();
             }
-            console.log(body);
+            //console.log(body);
             var o = JSON.parse(body);
+            total += o.items.length;
             console.log(o.items.length + " items");
             var nextLink = o.nextLink;
             if (nextLink) {
                 getChunk(nextLink);
             } else {
+                console.log("total: " + total + " items.")
                 done();
             }
         };
