@@ -1,8 +1,14 @@
 {
   "name": "google-oauth2",
-  "description": "Google API OAuth2 module intended for command line interfaces",
-  "version": "1.0.0",
+  "description": "Google API OAuth2 helpers",
+  "version": "0.1.0",
   "author": "Ben Lyaunzon <lyaunzon.b@gmail.com>",
+  "contributors": [ 
+     {
+       "name": "Jan Bölsche",
+       "email": "jan@lagomorph.de"
+     }
+  ],
   "keywords": [
     "google",
     "outh",
@@ -10,28 +16,29 @@
     "google-api",
     "api"
   ],
-  "homepage": "https://github.com/lyaunzbe/node-gauth",
+  "homepage": "https://github.com/regular/node-google-oauth2",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lyaunzbe/node-gauth.git"
+    "url": "https://github.com/regular/node-google-oauth2.git"
   },
   "engines": {
-    "node": ">= 0.8.x"
+    "node": "0.5.x"
   },
-  "main": "lib/gdrive.js",
+  "main": "index.js",
   "dependencies": {
-    "request": ">= 2.12.0",
-    "async": "~0.1.22"
+    "request": "2.12.x",
+    "async": "0.1.x"
   },
   "devDependencies": {
-    "mocha": ">= 1.7.4",
-    "chai": "~1.4.2",
-    "coffee-script": "~1.4.0"
+    "mocha": "1.7.x",
+    "chai": "1.4.x",
+    "coffee-script": "1.4.x"
   },
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha --timeout 20000 --compilers coffee:coffee-script --reporter spec test/*"
   },
   "optionalDependencies": {
-    "phantomjs": "~1.8.0-1"
-  }
+    "phantomjs": "1.8.x"
+  },
+  "licence": "MIT"
 }
