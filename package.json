@@ -20,13 +20,18 @@
   },
   "main": "lib/gdrive.js",
   "dependencies": {
-    "request": ">= 2.12.0"
+    "request": ">= 2.12.0",
+    "async": "~0.1.22"
   },
   "devDependencies": {
     "mocha": ">= 1.7.4",
-    "chai": "~1.4.2"
+    "chai": "~1.4.2",
+    "coffee-script": "~1.4.0"
   },
   "scripts": {
-    "test": "mocha test/*"
+    "test": "./node_modules/mocha/bin/mocha --timeout 20000 --compilers coffee:coffee-script test/*"
+  },
+  "optionalDependencies": {
+    "phantomjs": "~1.8.0-1"
   }
 }
