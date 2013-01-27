@@ -1,5 +1,5 @@
 {
-  "name": "gauth",
+  "name": "google-oauth2",
   "description": "Google API OAuth2 module intended for command line interfaces",
   "version": "1.0.0",
   "author": "Ben Lyaunzon <lyaunzon.b@gmail.com>",
