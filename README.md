@@ -7,18 +7,21 @@ With borrowed code from [node-gAUth by Ben Lyaunzon](https://github.com/lyaunzbe
 For some reason Google decided to document their new APIs on an SDK level only, e.g. they do not provide documentation for the REST APIs.
 Instead they talk about how to use their client libraries for "popular" platforms. Server-side JS is not among them. This sucks.
 
-Earlier versions of Google APIs were documented on a REST level. They are deprecated and, at least in one instance, [Google broke an API](http://stackoverflow.com/questions/13552687/google-document-list-api-v2-regression-feed-does-not-contain-all-documents) and [does not even acknowledge the fact](http://code.google.com/a/google.com/p/apps-api-issues/issues/detail?id=3274). This sucks.
+Earlier versions of Google APIs were documented on a REST level. They are deprecated and, at least in one instance, [Google broke an API](http://stackoverflow.com/questions/13552687/google-document-list-api-v2-regression-feed-does-not-contain-all-documents) and [does not even acknowledge the fact](http://code.google.com/a/google.com/p/apps-api-issues/issues/detail?id=3274).
+This sucks even more.
+
+end of rant.
 
 Preparation
 ----------
 
 First you need to register your application or service with [Google's API console](https://code.google.com/apis/console) aka Dashboard
 - go to *Services* and enable the API you want to use
-- go to *API Access* and create a CLient ID
+- go to *API Access* and create a Client ID
 - copy the strings labeled *Client-ID* and *Client-Secret*
 - paste them into a file called oauth2-config.js and put it into your project (but don't check it in!)
 
-oauth2-config.js should look something this
+oauth2-config.js should look something like this:
 
     module.exports = {
         // these are from the Google API console web interface
@@ -46,7 +49,7 @@ With the client id, client secret and the scope, you can now request an auth cod
 
 Normally this would happen in a web session. Because the user needs a way to grant permissions, the code above will open a
 local web browser. Here you can log into your account and grant the permissions defined by the scope.
-The Google Auth server will then redirect to localhost:3000 where a temporary http server (created inside the getAuthCode) will
+The Google Auth server will then redirect to localhost:3000 where a temporary http server (created inside *getAuthCode*) will
 receive the auth code.
 
 Because opening a web browser in a headless server environment often is not an option, we should think about a different solution. See Authorization Automation below.
@@ -64,10 +67,8 @@ The access token is needed to make actual API calls. However, it will expire aft
 (typically one hour). The refresh token on the other hand can be used to get a fresh access token for another
 hour of API fun.
 
-describe "#getAccessTokenForRefreshToken()", ->
-    it "Respond with new access token and expiration time", (done) ->
-        goauth2.getAccessTokenForRefreshToken refresh_token, (err, result) ->
-            console.log result.access_token
+    goauth2.getAccessTokenForRefreshToken refresh_token, (err, result) ->
+        console.log result.access_token
 
 Make API calls
 --------------
@@ -93,10 +94,16 @@ In that case you could put a google account name and password in oauth2-config.j
 - navigate to the grant permission page and automatically click the blue button
 
 This would not only improve this module's unit tests, it would also be a solution for server-side
-authorization of the service's own google account. And this process could be integrated with automatic provisioning. (Infrastructure us Code)
+authorization of the service's own google account. And this process could be integrated with automatic provisioning. (Infrastructure is Code)
 
-What can I say? It nearly works! ALl you need to do to see it fail is uncomment the first test in test/test.coffee.
+What can I say? It nearly works! [This phantomjs script](https://github.com/regular/node-google-oauth2/blob/master/lib/google-login-phantomjs-script.coffee) tries to performs the steps above. All you need to do to see it fail is uncomment the first test in [test/test.coffee](https://github.com/regular/node-google-oauth2/blob/master/test/test.coffee#L12-L19)
+and run
+
+   npm test
+
 Everything works except for one thing: clicking the blue button. And I have no idea why it doesn't. When the test times out it automatically makes a screenshot of the browser session for you to check out.
 Pull Requests are very welcome!
+
+
 
 -- Jan
