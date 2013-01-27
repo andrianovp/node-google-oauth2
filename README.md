@@ -52,7 +52,7 @@ local web browser. Here you can log into your account and grant the permissions 
 The Google Auth server will then redirect to localhost:3000 where a temporary http server (created inside *getAuthCode*) will
 receive the auth code.
 
-Because opening a web browser in a headless server environment often is not an option, we should think about a different solution. See Authorization Automation below.
+Because opening a web browser in a headless server environment often is not an option, we should think about a different solution. See [Authorization Automation](#authorization-automation) below.
 
 Tokens
 ------
