@@ -99,11 +99,11 @@ authorization of the service's own google account. And this process could be int
 What can I say? It nearly works! [This phantomjs script](https://github.com/regular/node-google-oauth2/blob/master/lib/google-login-phantomjs-script.coffee) tries to performs the steps above. All you need to do to see it fail is uncomment the first test in [test/test.coffee](https://github.com/regular/node-google-oauth2/blob/master/test/test.coffee#L12-L19)
 and run
 
-   npm test
+    npm test
 
 Everything works except for one thing: clicking the blue button. And I have no idea why it doesn't. When the test times out it automatically makes a screenshot of the browser session for you to check out.
 Pull Requests are very welcome!
 
-
+And now go ahead and write some Google API wrapers!
 
 -- Jan
