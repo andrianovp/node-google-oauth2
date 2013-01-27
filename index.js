@@ -29,7 +29,7 @@
     */
 
     getAuthCode = function(scope, openURICallback, callback) {
-      var parseCode, qs, server, uri;
+      var qs, server, uri;
       if (arguments.length === 2) {
         callback = openURICallback;
         openURICallback = null;
@@ -44,17 +44,13 @@
         scope: scope
       };
       uri = endpoint_auth + "?" + querystring.stringify(qs);
-      parseCode = function(req, res) {
-        console.log("Stopping server ...");
-        server.close();
-        return callback(null, querystring.parse(req.url.split("?")[1]).code);
-      };
       console.log("Starting server ...");
       server = require("http").createServer(function(req, res) {
         console.log("server receives request for", req.url);
-        if (req.url.match(/callback/)) {
-          return parseCode(req, res);
-        }
+        console.log("Stopping server ...");
+        server.close();
+        res.end("ok");
+        return callback(null, querystring.parse(req.url.split("?")[1]).code);
       }).listen(3000);
       return openURICallback(uri, function(err) {
         if (err) {
@@ -109,9 +105,9 @@
       return request.post({
         url: endpoint_token,
         form: form
-      }, function(err, req, body) {
-        if (err != null) {
-          callback(err);
+      }, function(err, res, body) {
+        if ((err != null) || res.statusCode !== 200) {
+          return callback(err || body);
         }
         return callback(null, JSON.parse(body));
       });

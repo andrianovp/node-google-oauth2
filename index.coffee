@@ -38,21 +38,14 @@ module.exports = (opts) ->
             scope: scope
         
         uri = endpoint_auth + "?" + querystring.stringify(qs)
-        
-        parseCode = (req, res) ->
-            #for gdrive-cli:
-            #instead of just closing the connection, redirect to an informational page
-            console.log "Stopping server ..."
-            server.close()
-            
-            #split url by ? so we just have the querystring left
-            #extract out the auth code
-            callback null, querystring.parse(req.url.split("?")[1]).code
-        
+                
         console.log "Starting server ..."
         server = require("http").createServer((req, res) ->
             console.log "server receives request for", req.url
-            parseCode req, res    if req.url.match(/callback/)
+            console.log "Stopping server ..."
+            server.close()
+            res.end "ok"
+            callback null, querystring.parse(req.url.split("?")[1]).code
         ).listen(3000)
         
         openURICallback uri, (err) ->
@@ -98,10 +91,9 @@ module.exports = (opts) ->
         request.post
             url: endpoint_token
             form: form
-        , (err, req, body) ->
-            if err? then callback err
+        , (err, res, body) ->
+            if err? or res.statusCode isnt 200 then return callback err or body
             callback null, JSON.parse(body)
-
 
     ###
     Given google account name and password, use phantomJS to login a user into google services.
