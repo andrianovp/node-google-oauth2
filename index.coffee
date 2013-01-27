@@ -22,7 +22,10 @@ module.exports = (opts) ->
     ###
 
     getAuthCode = (scope, openURICallback, callback) ->
-        
+        if arguments.length is 2
+            callback = openURICallback
+            openURICallback = null
+            
         # default: open the system's web browser
         openURICallback or= (uri, cb) ->
             #TODO: Make OS agnostic w/ xdg-open, open, etc.
@@ -48,12 +51,13 @@ module.exports = (opts) ->
         
         console.log "Starting server ..."
         server = require("http").createServer((req, res) ->
+            console.log "server receives request for", req.url
             parseCode req, res    if req.url.match(/callback/)
         ).listen(3000)
         
         openURICallback uri, (err) ->
-            callback err
-
+            if (err) then callback err
+            console.log "uri opened ..."
 
     ###
     Given the acquired authorization code and the provided opts,
@@ -156,5 +160,8 @@ module.exports = (opts) ->
                 cb err, result?.access_token
     
     return {
+        getAuthCode: getAuthCode
         authorizeApplication: authorizeApplication
+        getTokensForAuthCode: getTokensForAuthCode
+        getAccessTokenForRefreshToken: getAccessTokenForRefreshToken
     }

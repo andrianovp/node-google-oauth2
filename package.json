@@ -29,7 +29,7 @@
     "coffee-script": "~1.4.0"
   },
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha --timeout 20000 --compilers coffee:coffee-script test/*"
+    "test": "./node_modules/mocha/bin/mocha --timeout 20000 --compilers coffee:coffee-script --reporter spec test/*"
   },
   "optionalDependencies": {
     "phantomjs": "~1.8.0-1"

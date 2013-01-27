@@ -30,6 +30,10 @@
 
     getAuthCode = function(scope, openURICallback, callback) {
       var parseCode, qs, server, uri;
+      if (arguments.length === 2) {
+        callback = openURICallback;
+        openURICallback = null;
+      }
       openURICallback || (openURICallback = function(uri, cb) {
         return exec("open '" + uri + "'", cb);
       });
@@ -47,12 +51,16 @@
       };
       console.log("Starting server ...");
       server = require("http").createServer(function(req, res) {
+        console.log("server receives request for", req.url);
         if (req.url.match(/callback/)) {
           return parseCode(req, res);
         }
       }).listen(3000);
       return openURICallback(uri, function(err) {
-        return callback(err);
+        if (err) {
+          callback(err);
+        }
+        return console.log("uri opened ...");
       });
     };
     /*
@@ -161,7 +169,10 @@
       }
     });
     return {
-      authorizeApplication: authorizeApplication
+      getAuthCode: getAuthCode,
+      authorizeApplication: authorizeApplication,
+      getTokensForAuthCode: getTokensForAuthCode,
+      getAccessTokenForRefreshToken: getAccessTokenForRefreshToken
     };
   };
 

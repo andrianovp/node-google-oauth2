@@ -51,9 +51,9 @@ confirmPermissions = (uri) ->
     
     confirmPage = require('webpage').create()
     confirmPage.onConsoleMessage = (msg) -> console.log(msg)
-    #confirmPage.onAlert = (msg) -> console.log(msg)
+    confirmPage.onAlert = (msg) -> console.log(msg)
     confirmPage.onUrlChanged = (url) ->
-        console.log "new confirm url #{url}"
+        console.log "*NEW* confirm url #{url}"
         
     confirmPage.open uri, (status) ->
         console.log status
@@ -69,11 +69,14 @@ confirmPermissions = (uri) ->
                 $("button").each ->
                     console.log "button", $(this).attr("type"), this.id, this.name, $(this).val()
                 
-                button = $("button").first()
+                button = $('#submit_approve_access').first()
                 {left, top} = button.offset()
                 [width, height] = [button.width(), button.height()]
                 
-                button.click()
+                # window.setTimeout ->
+                #      #button[0].click()
+                #      #document.location.href = "http://localhost:3000/callback?code=4/evxJ1gaSk09OOmvtw1y3V5avi-gB.Ahort6xHLlYTOl05ti8ZT3a3ER_2eAI"
+                # , 1000
                 
                 return {
                     x: Math.round left + width/2
@@ -82,14 +85,14 @@ confirmPermissions = (uri) ->
             
         setTimeout ->
             console.log "approving by clicking at", pos.x, pos.y
-            confirmPage.sendEvent 'mousedown', pos.x, pos.y, "left"
-            confirmPage.sendEvent 'mouseup', pos.x, pos.y, "left"
+            # confirmPage.sendEvent 'mousedown', pos.x, pos.y, "left"
+            # confirmPage.sendEvent 'mouseup', pos.x, pos.y, "left"
             confirmPage.sendEvent 'click', pos.x, pos.y
         , 2000
         
             
-        setTimeout ->
-            confirmPage.render "timeoui.png"
-            console.log("TIMEOUT while approving! See timeout.png.")
-            phantom.exit 1
-        , 8000
+        # setTimeout ->
+        #     confirmPage.render "timeoui.png"
+        #     console.log("TIMEOUT while approving! See timeout.png.")
+        #     phantom.exit 1
+        # , 8000
