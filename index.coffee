@@ -25,29 +25,38 @@ module.exports = (opts) ->
         if arguments.length is 2
             callback = openURICallback
             openURICallback = null
-            
+
         # default: open the system's web browser
         openURICallback or= (uri, cb) ->
             #TODO: Make OS agnostic w/ xdg-open, open, etc.
             exec "open '#{uri}'", cb
-            
+
         qs =
             response_type: "code"
             client_id: opts.client_id
             redirect_uri: opts.redirect_uri
             scope: scope
-        
+
         uri = endpoint_auth + "?" + querystring.stringify(qs)
-                
+
         console.log "Starting server ..."
+
+        opened = true
+
         server = require("http").createServer((req, res) ->
-            console.log "server receives request for", req.url
-            console.log "Stopping server ..."
-            server.close()
-            res.end "ok"
-            callback null, querystring.parse(req.url.split("?")[1]).code
+            if opened
+                console.log "server receives request for", req.url
+                console.log "Stopping server ..."
+                server.close()
+                res.end "ok"
+
+            code = querystring.parse(req.url.split("?")[1]).code
+            if code
+                opened = false
+                callback null, code
+
         ).listen(3000)
-        
+
         openURICallback uri, (err) ->
             if (err) then callback err
             console.log "uri opened ..."
