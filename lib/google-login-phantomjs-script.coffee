@@ -37,7 +37,7 @@ page.open "https://accounts.google.com/ServiceLogin", (status) ->
             , system.args[1], system.args[2]
 
         setTimeout ->
-            page.render "timeoui.png"
+            page.render "timeout.png"
             console.log("TIMEOUT! See timeout.png.")
             phantom.exit 1
         , 15000
